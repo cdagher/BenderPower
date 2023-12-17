@@ -3956,6 +3956,23 @@
     )
   )
 
+  (sheet (at 304.8 63.5) (size 25.4 15.24) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid d1649c74-fa7d-44c0-b1d0-3a349bfacc62)
+    (property "Sheetname" "Aux Out 1" (at 304.8 62.7884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "aux_1.kicad_sch" (at 304.8 79.3246 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "2023-24_Power_Supply"
+        (path "/9d08c113-56e0-4c7c-90b4-94c67f8b2e1a" (page "5"))
+      )
+    )
+  )
+
   (sheet (at 304.8 43.18) (size 25.4 15.24) (fields_autoplaced)
     (stroke (width 0.1524) (type solid))
     (fill (color 0 0 0 0.0000))

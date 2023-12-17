@@ -3,4 +3,5 @@
   (lib (name "Maxim")(type "KiCad")(uri "${KIPRJMOD}/lib/Maxim.kicad_sym")(options "")(descr ""))
   (lib (name "Nexperia")(type "KiCad")(uri "${KIPRJMOD}/lib/Nexperia.kicad_sym")(options "")(descr ""))
   (lib (name "TI.Library")(type "KiCad")(uri "${KIPRJMOD}/lib/TI/TI.Library.kicad_sym")(options "")(descr ""))
+  (lib (name "regulator_slot")(type "KiCad")(uri "${KIPRJMOD}/lib/Regulator_Slot/regulator_slot.kicad_sym")(options "")(descr ""))
 )
