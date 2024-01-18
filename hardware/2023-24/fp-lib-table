@@ -4,4 +4,6 @@
   (lib (name "Nexperia")(type "KiCad")(uri "${KIPRJMOD}/lib/Nexperia/Nexperia.pretty")(options "")(descr ""))
   (lib (name "TI")(type "KiCad")(uri "${KIPRJMOD}/lib/TI/TI.pretty")(options "")(descr ""))
   (lib (name "Regulator_Slot")(type "KiCad")(uri "${KIPRJMOD}/lib/Regulator_Slot/Regulator_Slot.pretty")(options "")(descr ""))
+  (lib (name "CUI")(type "KiCad")(uri "${KIPRJMOD}/lib/CUI.pretty")(options "")(descr ""))
+  (lib (name "Omron")(type "KiCad")(uri "${KIPRJMOD}/lib/Omron/Omron.pretty")(options "")(descr ""))
 )

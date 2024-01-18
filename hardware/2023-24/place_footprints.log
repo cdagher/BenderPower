@@ -1,0 +1,74 @@
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 641:Plugin executed on: 'win32'
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 642:Plugin executed with python version: '3.9.16 (main, Oct 13 2023, 05:50:11) [MSC v.1936 64 bit (AMD64)]'
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 643:KiCad build version: 7.0.9
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 644:Plugin version: 2.1.2
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 645:Frame repr: <wx._core.Frame object at 0x00000160803C0700>
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 121:getting a list of all footprints on board
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C15 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint J1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 140:Footprint  does not have Sheetfile property, it will not be considered for placement. Most likely it is only in layout
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C12 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C2 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 140:Footprint  does not have Sheetfile property, it will not be considered for placement. Most likely it is only in layout
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C8 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint D4 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C5 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R5 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C18 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint U2 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C10 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C11 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C9 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R2 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C21 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R7 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C13 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C20 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint U4 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint J3 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R6 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R8 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C16 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C19 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C3 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint L1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R10 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint D2 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint D1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C6 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R3 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 140:Footprint  does not have Sheetfile property, it will not be considered for placement. Most likely it is only in layout
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R9 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C17 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint U1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 140:Footprint  does not have Sheetfile property, it will not be considered for placement. Most likely it is only in layout
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint R4 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C4 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C14 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C7 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint D3 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 140:Footprint  does not have Sheetfile property, it will not be considered for placement. Most likely it is only in layout
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint Y1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint SW1 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint U3 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint J2 on root level
+12-28 22:43:47 com_github_MitjaNemec_PlaceFootprints.place_footprints 156:Footprint C1 on root level
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 86:By Sheet GUI initialized
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 95:Selecting: 2
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 99:Should invoke level_changed()
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 276:Level_changed() invoked
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.place_footprints 244:constructing a list of sheets suitable for replication on level:'Battery 2', file:'battery_2.kicad_sch'
+12-28 22:43:51 com_github_MitjaNemec_PlaceFootprints.place_footprints 279:suitable sheets are:[]
+12-28 22:44:00 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 276:Level_changed() invoked
+12-28 22:44:00 com_github_MitjaNemec_PlaceFootprints.place_footprints 244:constructing a list of sheets suitable for replication on level:'Battery Switching', file:'battery_inputs.kicad_sch'
+12-28 22:44:00 com_github_MitjaNemec_PlaceFootprints.place_footprints 279:suitable sheets are:[]
+12-28 22:44:02 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 276:Level_changed() invoked
+12-28 22:44:02 com_github_MitjaNemec_PlaceFootprints.place_footprints 244:constructing a list of sheets suitable for replication on level:'Battery 2', file:'battery_2.kicad_sch'
+12-28 22:44:02 com_github_MitjaNemec_PlaceFootprints.place_footprints 279:suitable sheets are:[]
+12-28 22:44:04 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 276:Level_changed() invoked
+12-28 22:44:04 com_github_MitjaNemec_PlaceFootprints.place_footprints 244:constructing a list of sheets suitable for replication on level:'Battery Switching', file:'battery_inputs.kicad_sch'
+12-28 22:44:04 com_github_MitjaNemec_PlaceFootprints.place_footprints 279:suitable sheets are:[]
+12-28 22:44:06 com_github_MitjaNemec_PlaceFootprints.action_place_footprints 276:Level_changed() invoked
+12-28 22:44:06 com_github_MitjaNemec_PlaceFootprints.place_footprints 244:constructing a list of sheets suitable for replication on level:'Battery 2', file:'battery_2.kicad_sch'
+12-28 22:44:06 com_github_MitjaNemec_PlaceFootprints.place_footprints 279:suitable sheets are:[]

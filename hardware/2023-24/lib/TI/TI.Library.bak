@@ -6,7 +6,7 @@
     (property "Value" "LM5066" (at 3.81 -77.47 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 0 6.35 0)
+    (property "Footprint" "TI:HTSSOP-28" (at 0 6.35 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/lm5066i" (at 54.61 -80.01 0)
