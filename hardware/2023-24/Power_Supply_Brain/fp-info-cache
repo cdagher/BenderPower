@@ -1,4 +1,4 @@
-22536758837763016
+22518007038968036
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -2456,20 +2456,6 @@ speaker CUI
 0
 2
 2
-CUI
-CUI_TBL007A-508-02BE
-
-
-0
-4
-4
-CUI
-CUI_TBL007A-508-06GY
-
-
-0
-12
-12
 Calibration_Scale
 Gauge_10mm_Type1_CopperTop
 Gauge, Massstab, 10mm, CopperTop, Type 1,
@@ -62523,13 +62509,6 @@ Yellow 5381 Series LED
 0
 2
 2
-Maxim
-TDFN
-
-
-0
-11
-11
 Module
 A20_OLINUXINO_LIME2
 A20 Olinuxino LIME2, 1.2GHz, 512-1024MB RAM, Micro-SD, NAND or eMMC, 1000Mbit Ethernet
@@ -65189,20 +65168,6 @@ Net tie, 4 pin, 1.0mm round THT pads
 net tie
 0
 4
-4
-Nexperia
-WLCSP-8
-
-
-0
-8
-3
-Omron
-Relay_SPST_Omron_G9KB
-
-
-0
-6
 4
 OptoDevice
 ADNS-9800
@@ -83502,41 +83467,6 @@ WiFi IEEE802.11 b/g/n
 0
 44
 44
-Regulator_Slot
-30x30_slot
-
-
-0
-24
-18
-Regulator_Slot
-30x35_Slot
-
-
-0
-24
-18
-Regulator_Slot
-30x40_Slot
-
-
-0
-24
-18
-Regulator_Slot
-30x50_Slot
-
-
-0
-24
-18
-Regulator_Slot
-50x50_slot
-
-
-0
-24
-18
 Relay_SMD
 Relay_2P2T_10x6mm_TE_IMxxG
 Signal Relay, 10x6mm, 2 Form C, Gull Wings, https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7F108-98001%7FZ.1%7Fpdf%7FEnglish%7FENG_DS_108-98001_Z.1.pdf
@@ -87205,13 +87135,6 @@ Logo WEEE
 0
 0
 0
-TI
-HTSSOP-28
-
-
-0
-29
-28
 TerminalBlock
 TerminalBlock_Altech_AK300-2_P5.00mm
 Altech AK300 terminal block, pitch 5.0mm, 45 degree angled, see http://www.mouser.com/ds/2/16/PCBMETRC-24178.pdf

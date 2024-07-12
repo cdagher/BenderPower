@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Graphics")(type "KiCad")(uri "C:/Users/chris/Documents/repos/BenderPower/hardware/2023-24/lib/Graphics/Graphics.pretty")(options "")(descr ""))
+)
