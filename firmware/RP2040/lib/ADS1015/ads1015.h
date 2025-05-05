@@ -1,4 +1,6 @@
 
+/* qeftser 5/6/2025 04:21:55 JST */
+
 #ifndef __RP2040_FIRMWARE_LIB_ADS1015__
 
 #define __RP2040_FIRMWARE_LIB_ADS1015__
@@ -165,7 +167,7 @@ public:
     * alert pin for status updates                           */
    ads1015(i2c_inst_t * i2c_conn, uint8_t ads_addr, uint32_t alert_pin);
 
-   /* mainly just set the adc to default when the class
+   /* just set the adc to default when the class
     * instance goes out of scope.                       */
    ~ads1015();
 
@@ -211,13 +213,16 @@ public:
    /* return the status of the alert pin */
    int alert();
 
+   /* return true if a conversion is currently occuring */
+   int is_converting();
+
    /* set the gain to the closest value equal or higher 
     * then the provided gain. Return the actual gain set. */
    double set_gain_best_effort(double gain);
 
    /* set the gain on the adc using the gain macros.
     * Return the gain set.                          */
-   double set_gain(int gain);
+   double set_gain(uint8_t gain);
 
    /* turn on the comparator with the given high and low
     * thresholds. This will override the previous use
@@ -226,7 +231,7 @@ public:
     * the number of times the value can go out of range before
     * triggering the alert pin. latching determines whether to
     * set the comparator as latching. Default is false - no */
-   void enable_comparator(int trigger_num, int high_thresh, int low_thresh, bool latching = false);
+   void enable_comparator(uint8_t trigger_num, uint16_t high_thresh, uint16_t low_thresh, bool latching = false);
 
    /* turn off the comparator - this will disable the alert pin 
     * if it was being used                                      */
@@ -234,6 +239,24 @@ public:
 
    /* write the current config struct to the config register */
    void set_config();
+
+   /* change the operating mode of the multiplexer 
+    * using one of the ADS1015_MUX macros         */
+   void set_multiplexer(uint8_t mux);
+
+   /* change the polarity of the comparator to high (true) or low (false) */
+   void set_comparator_polarity(bool status);
+
+   /* set the comparator to window mode if true, otherwise set to traditional */
+   void set_comparator_window(bool status);
+
+   /* set the data rate to the closest value equal or higher then
+    * the provided data rate. Return the data rate set.          */
+   uint16_t set_data_rate_best_effort(uint16_t dr);
+
+   /* set the data rate on the adc using the ADS1015_DR macros 
+    * return the data rate that was set                        */
+   uint16_t set_data_rate(uint8_t dr);
 
 };
 
