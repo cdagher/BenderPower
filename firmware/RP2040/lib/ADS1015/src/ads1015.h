@@ -1,6 +1,0 @@
-
-#ifndef __RP2040_FIRMWARE_LIB_ADS1015__
-
-#define __RP2040_FIRMWARE_LIB_ADS1015__
-
-#endif
