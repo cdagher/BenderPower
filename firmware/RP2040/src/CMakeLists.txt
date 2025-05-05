@@ -18,6 +18,21 @@ ADD_CUSTOM_COMMAND(
         COMMAND ${CMAKE_COMMAND} -P
                 ${CMAKE_CURRENT_SOURCE_DIR}/flags.cmake)
 
+add_library(board INTERFACE)
+
+target_sources(board
+   INTERFACE
+   ${CMAKE_CURRENT_LIST_DIR}/board.h
+   ${CMAKE_CURRENT_LIST_DIR}/flags.h
+   ${CMAKE_CURRENT_LIST_DIR}/version.h
+)
+
+
+target_include_directories(board
+   INTERFACE
+   ${CMAKE_CURRENT_LIST_DIR}
+)
+
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME} 
     main.cpp
