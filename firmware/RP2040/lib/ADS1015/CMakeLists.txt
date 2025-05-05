@@ -1,6 +1,13 @@
 
 add_library(ads1015 "")
 
+target_link_libraries(ads1015
+   pico_stdlib
+   pico_binary_info
+   hardware_i2c
+)
+
+
 target_sources(ads1015
 
    PRIVATE
