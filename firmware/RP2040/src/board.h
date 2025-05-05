@@ -73,8 +73,11 @@ The ADCs used are 2x ADS1015 from Texas Instruments
 ADCs should use I2C1 for communication with the RP2040.
 */
 
+#define ADC_1_ADDR 0x48
 #define ADC_1_RDY 18
 #define ADC_1_RDY_PIN_MODE GPIO_FUNC_SIO
+
+#define ADC_2_ADDR 0x49
 #define ADC_2_RDY 19
 #define ADC_2_RDY_PIN_MODE GPIO_FUNC_SIO
 
