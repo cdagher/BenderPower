@@ -1,5 +1,6 @@
 #pragma once
 #include "pico/stdlib.h"
+#include "hardware/spi.h"
 
 class LED1642GW {
 public:
