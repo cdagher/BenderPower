@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.0.0)
 cmake_policy(SET CMP0057 NEW)
 
 # Pull in SDK
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+set(PICO_SDK_FETCH_FROM_GIT on)
+
+include(pico_sdk_import.cmake)
 
 project(Bender_PSU_RP2040 LANGUAGES C CXX ASM)
 set(CMAKE_C_STANDARD 11)
