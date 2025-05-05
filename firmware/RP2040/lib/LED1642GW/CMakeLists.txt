@@ -20,9 +20,3 @@ target_link_libraries(led1642gw
     hardware_spi
 )
 
-# Enable USB output and disable UART for stdio
-pico_enable_stdio_usb(led1642gw 1)
-pico_enable_stdio_uart(led1642gw 0)
-
-# Create the .uf2 file
-pico_add_extra_outputs(led1642gw)
