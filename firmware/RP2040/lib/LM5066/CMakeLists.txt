@@ -1,5 +1,5 @@
 add_library(lm5066
-    LM5066.cpp
+    lm5066.cpp
 )
 
 target_link_libraries(lm5066
