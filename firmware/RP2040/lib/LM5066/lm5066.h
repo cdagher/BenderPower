@@ -7,6 +7,7 @@
 #include "pico/binary_info.h"
 #include "hardware/i2c.h"
 #include <stdint.h>
+#include <math.h>
 
 /* Retrieves or stores the operation status */
 #define LM5066_CMD_OPERATION 0x01
@@ -233,6 +234,181 @@
 /* Retrieves most recent average telemetry and diagnostic information
 in a single transaction */
 #define LM5066_CMD_AVG_BLOCK_READ 0xe2
+
+class lm5066 {
+
+private:
+
+   i2c_inst_t * i2c_conn;
+   uint8_t addr;
+   uint32_t smba_pin;
+
+   uint16_t diagnostic_word = 0;
+   uint16_t avg_in = 0;
+   uint16_t avg_vout = 0;
+   uint16_t avg_vin = 0;
+   uint16_t avg_pin = 0;
+   uint16_t temperature = 0;
+
+   /* send the given command as read(false) or write(true) */
+   void send_command(uint8_t cmd, bool rw);
+
+   /* write the given bytes to the device */
+   void write_data(uint8_t * bytes, int num);
+
+   /* read the given bytes from the device */
+   void read_data(uint8_t * bytes, int num);
+
+   /* write the given command and then write the given bytes */
+   void cmd_read(uint8_t cmd, uint8_t * bytes, int num);
+
+   /* write the given command and then read the given bytes */
+   void cmd_write(uint8_t cmd, uint8_t * bytes, int num);
+
+   /* convert to a uint16_t from double using the formula on pg. 39
+    * of the lm5066 TI datasheet                                   */
+   uint16_t to_telemetry_int(double val, double m, double b, int R);
+
+   /* perform the inverse of the above operation */
+   double from_telemetry_int(uint16_t val, double m, double b, int R);
+
+public:
+
+   /* initialize the lm5066 */
+   lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin);
+
+   /* reset all values to default on exit */
+   ~lm5066();
+
+   /* switch the mosfet off and then back on */
+   void reenable();
+
+   /* set the mosfet as off or on */
+   void set_mosfet(bool status);
+
+   /* get the mosfet status. true is on, false is off */
+   bool get_mosfet();
+
+   /* clear faults on the device. You may want to set the mosfet 
+    * on after this as it might be off                          */
+   void clear_faults();
+
+   /* disable the undervoltage warning detection feature */
+   void disable_vout_undervoltage_warn();
+
+   /* set the threshold for vout undervoltage warning */
+   void set_vout_undervoltage_warn(double volts);
+
+   /* get the threshold for vout undervoltage warning */
+   double get_vout_undervoltage_warn();
+
+   /* disable the overtemperature fault feature */
+   void disable_overtemperature_fault();
+
+   /* set the threshold for overtemperature fault */
+   void set_overtemperature_fault_val(double degrees_c);
+
+   /* get the threshold for overtemperature fault */
+   double get_overtemperature_fault_val();
+
+   /* disable the overtemperature warn feature */
+   void disable_overtemperature_warn();
+
+   /* set the threshold for overtemperature warn */
+   void set_overtemperature_warn_val(double degrees_c);
+
+   /* get the threshold for overtemperature warn */
+   double get_overtemperature_warn_val();
+
+   /* disable the overtemperature warn feature */
+   void disable_overvoltage_warn();
+
+   /* set the threshold for overvoltage warning */
+   void set_overvoltage_warn_val(double volts);
+
+   /* get the threshold for overvoltage warning */
+   double get_overvoltage_warn_val();
+
+   /* disable the undervoltage warn feature */
+   void disable_undervoltage_warn();
+
+   /* set the threshold for undervoltage warn */
+   void set_undervoltage_warn_val(double volts);
+
+   /* get the threshold for undervoltage warn */
+   double get_undervoltage_warn_val();
+
+private:
+
+   struct lm5066_ein_values {
+      uint32_t accumulator;
+      uint32_t sample_count;
+   };
+
+   struct lm5066_ein_values prev_ein = { 0, 0 };
+   struct lm5066_ein_values curr_ein = { 0, 0 };
+
+public:
+
+   /* return the average input power consumption 
+    * Note that because of how this value works you
+    * are going to want to call it, sleep for a bit,
+    * and then call it again if you have not called it
+    * in a while to ensure that no more than a single 
+    * overflow has occured. So if you haven't called it
+    * for more than 3 or 4 seconds call it once, sleep
+    * for a few millseconds and then call it again and
+    * take the value that is returned from the second call */
+   double get_ein();
+
+   /* do everything discussed above */
+   double get_ein_safe();
+
+   /* return the current reading of input voltage */
+   double get_vin();
+
+   /* return the current reading of input amperage */
+   double get_iin();
+
+   /* return the current reading of the output voltage */
+   double get_vout();
+
+   /* return the current reading of the device temperature */
+   double get_temperature();
+   
+   /* return current reading of input power */
+   double get_pin();
+
+   /* return a 14-bit string describing this device
+    * ... manufacturer, name, revision ...         
+    * If size is less than 14, nothing happens. Last
+    * byte will be a null one                      */
+   void get_part_string(char * buf, int size);
+
+   /* get the measured auxillary voltage */
+   double get_vaux();
+
+   /* disable the overcurrent warn feature */
+   void disable_overcurrent_warn();
+
+   /* set the threshold for overvcurrent warn */
+   void set_overcurrent_warn_val(double amps);
+
+   /* get the threshold for overcurrent warn */
+   double get_overcurrent_warn_val();
+
+   /* disable the overpower warn feature */
+   void disable_overpower_warn();
+
+   /* set the threshold for overpower warn */
+   void set_overpower_warn_val(double watts);
+
+   /* get the threshold for overpower warn */
+   double get_overpower_warn_val();
+
+
+
+};
 
 
 #endif
