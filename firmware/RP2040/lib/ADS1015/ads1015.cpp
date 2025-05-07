@@ -50,7 +50,7 @@ ads1015::~ads1015() {
 uint16_t ads1015::read_conversion() {
 
    /* indicate read from the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
 
    /* choose target as conversion register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_CONVERSION);
@@ -71,7 +71,7 @@ uint16_t ads1015::read_conversion() {
 uint16_t ads1015::read_config() {
 
    /* indicate read from the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
 
    /* choose target as config register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_CONFIGURATION);
@@ -92,7 +92,7 @@ uint16_t ads1015::read_config() {
 uint16_t ads1015::read_lothresh() {
 
    /* indicate read from the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
 
    /* choose target as low theshold register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_LOW_THRESHOLD);
@@ -113,7 +113,7 @@ uint16_t ads1015::read_lothresh() {
 uint16_t ads1015::read_hithresh() {
 
    /* indicate read from the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
 
    /* choose target as high threshold register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_HIGH_THRESHOLD);
@@ -137,7 +137,7 @@ void ads1015::write_config(uint16_t val) {
    uint8_t lsb = val & 0xff;
 
    /* indicate write to the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
 
    /* choose target as config register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_CONFIGURATION);
@@ -155,7 +155,7 @@ void ads1015::write_lothresh(uint16_t val) {
    uint8_t lsb = val & 0xff;
 
    /* indicate write to the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
 
    /* choose target as low threshold register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_LOW_THRESHOLD);
@@ -173,7 +173,7 @@ void ads1015::write_hithresh(uint16_t val) {
    uint8_t lsb = val & 0xff;
 
    /* indicate write to the given address */
-   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 1));
+   i2c_write_byte_raw(i2c_conn,((ads_addr<<1) | 0));
 
    /* choose target as high threshold register */
    i2c_write_byte_raw(i2c_conn,ADS1015_REG_HIGH_THRESHOLD);

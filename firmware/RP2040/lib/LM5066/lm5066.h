@@ -244,7 +244,7 @@ private:
    uint32_t smba_pin;
 
    /* send the given command as read(false) or write(true) */
-   void send_command(uint8_t cmd, bool rw);
+   void send_command(uint8_t cmd);
 
    /* write the given bytes to the device */
    void write_data(uint8_t * bytes, int num);

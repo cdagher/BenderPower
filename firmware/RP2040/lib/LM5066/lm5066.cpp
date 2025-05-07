@@ -79,9 +79,9 @@ lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin) {
    this->smba_pin = smba_pin;
 }
 
-void lm5066::send_command(uint8_t cmd, bool rw) {
+void lm5066::send_command(uint8_t cmd) {
 
-   i2c_write_byte_raw(i2c_conn, ((addr << 1) | rw));
+   i2c_write_byte_raw(i2c_conn, ((addr << 1) | 0));
 
    i2c_write_byte_raw(i2c_conn, cmd);
 
@@ -109,7 +109,9 @@ void lm5066::read_data(uint8_t * bytes, int num) {
 
 void lm5066::cmd_read(uint8_t cmd, uint8_t * bytes, int num) {
 
-   send_command(cmd,false);
+   send_command(cmd);
+
+   i2c_write_byte_raw(i2c_conn, ((addr << 1) | 1));
 
    read_data(bytes,num);
 
@@ -117,7 +119,7 @@ void lm5066::cmd_read(uint8_t cmd, uint8_t * bytes, int num) {
 
 void lm5066::cmd_write(uint8_t cmd, uint8_t * bytes, int num) {
 
-   send_command(cmd,true);
+   send_command(cmd);
 
    write_data(bytes,num);
 
