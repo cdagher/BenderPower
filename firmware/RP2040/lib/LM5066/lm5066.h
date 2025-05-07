@@ -243,13 +243,6 @@ private:
    uint8_t addr;
    uint32_t smba_pin;
 
-   uint16_t diagnostic_word = 0;
-   uint16_t avg_in = 0;
-   uint16_t avg_vout = 0;
-   uint16_t avg_vin = 0;
-   uint16_t avg_pin = 0;
-   uint16_t temperature = 0;
-
    /* send the given command as read(false) or write(true) */
    void send_command(uint8_t cmd, bool rw);
 
@@ -406,7 +399,203 @@ public:
    /* get the threshold for overpower warn */
    double get_overpower_warn_val();
 
+   /* return the maximum input power measured
+    * since the last restart or clearing of
+    * this value.                            */
+   double get_max_pin();
 
+   /* clear and reset the maximum power in value */
+   void clear_max_pin();
+
+   /* enum for the set_gate_mask function */
+   enum lm5066_gate_mask {
+      LM5066_GM_UV  = 0b00100000, /* mask vin undervoltage fault */
+      LM5066_GM_OV  = 0b00010000, /* mask vin overvoltage fault */
+      LM5066_GM_INN = 0b00001000, /* mask input current fault */
+      LM5066_GM_TEMP= 0b00000100, /* mask overtemperature fault */
+      LM5066_GM_BRK = 0b00000001  /* mask circuit breaker fault */
+   };
+
+   /* set the gate mask to the new value. The passed
+    * second argument will be set to the previous
+    * gate mask if it is not set to null. 
+    * Use the above enum here to do this            */
+   void set_gate_mask(uint8_t mask, uint8_t * prev_mask = NULL);
+
+   /* enum for the set_alert_mask function */
+   enum lm5066_alert_mask {
+      LM5066_AM_UVO = 0x8000, /* mask vout undervoltage warn */
+      LM5066_AM_IIN = 0x4000, /* mask input current warn */
+      LM5066_AM_UVI = 0x2000, /* mask vin undervoltage warn */
+      LM5066_AM_OVI = 0x1000, /* mask vin overvoltage warn */
+      LM5066_AM_PWR = 0x0800, /* mask power good inversion alert */
+      LM5066_AM_TEMP= 0x0400, /* mask overtemperature warn */
+      LM5066_AM_OP  = 0x0100, /* mask overpower warn */
+      LM5066_AM_SHRT= 0x0040, /* mask external mosfet short alert */
+
+      /* these are same as above */
+      LM5066_AM_UV   = 0b00100000, /* mask vin undervoltage fault */
+      LM5066_AM_OV   = 0b00010000, /* mask vin overvoltage fault */
+      LM5066_AM_INN  = 0b00001000, /* mask input current fault */
+      LM5066_AM_TEMPF= 0b00000100, /* mask overtemperature fault */
+      LM5066_AM_BRK  = 0b00000001, /* mask circuit breaker fault */
+
+      /* this one is new though! */
+      LM5066_AM_CML  = 0b00000010 /* mask the communication fault */
+   };
+
+   /* set the alert mask to the new value. The passed
+    * second argument will be set to the previous
+    * alert mask if it is not set to null. 
+    * Use the above enum here to do this            */
+   void set_alert_mask(uint16_t mask, uint16_t * prev_mask = NULL);
+
+   /* device setup information */
+   enum lm5066_retry_count {
+      LM5066_RETRY_INF = 0b111, /* unlimited retries */
+      LM5066_RETRY_16  = 0b110, /* 16 retries */
+      LM5066_RETRY_8   = 0b110, /* 8 retries */
+      LM5066_RETRY_4   = 0b110, /* 4 retries */
+      LM5066_RETRY_2   = 0b110, /* 2 retries */
+      LM5066_RETRY_1   = 0b110, /* 1 retries */
+      LM5066_RETRY_0   = 0b110, /* 0 retries */
+      LM5066_RETRY_PIN = 0b000  /* use pin setting to configure retries */
+   };
+
+   enum lm5066_cl_setting {
+      LM5066_CL_SETTING_50mV = 0, /* set current limit to 50 mV */
+      LM5066_CL_SETTING_26mV = 1, /* set current limit to 26 mV */
+   };
+
+   enum lm5066_cb_cl_ratio {
+      LM5066_CB_CL_RATIO_19x = 0, /* set circuit breaker to current limit ratio to 1.9x */
+      LM5066_CB_CL_RATIO_39x = 1, /* set circuit breaker to current limit ratio to 3.9x */
+   };
+
+   enum lm5066_cl_config {
+      LM5066_CL_CONFIG_PIN = 0, /* use pin settings for the current limit */
+      LM5066_CL_CONFIG_REG = 1, /* use this register for the current limit settings */
+   };
+
+   /* optionally configure the device behavior using an internal
+    * register as opposed to an external pin. The config value must
+    * be set to LM5066_CL_CONFIG_REG (1) in order for these values
+    * to take effect. Use the above enums here                    */
+   void set_device_config(enum lm5066_retry_count retries, enum lm5066_cl_setting cl_setting,
+                          enum lm5066_cb_cl_ratio ratio  , enum lm5066_cl_config  cl_config  );
+
+   /* stored information values. Updated by internal
+    * functions and readable by the user.           */
+   uint16_t diagnostic_word = 0;
+   double avg_iin = 0;
+   double avg_vout = 0;
+   double avg_vin = 0;
+   double avg_pin = 0;
+   double temperature = 0;
+
+   /* update the internal values for diagnostics, ie. all fault and
+    * warning flags. 
+    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    * It is very important that this function is called before any
+    * later reading of specific faults, as if this is not called
+    * those values will not update. This is done to limit the number
+    * of reads as if the SMBA pin is triggered you will probably be
+    * checking for every fault anyway.
+    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
+   void update_diagnostics();
+
+   /* set the number of samples to collect for computing the average
+    * values. The number will be 2 to the power of the passed value */
+   void set_samples_average(uint8_t two_to_n);
+
+   /* return the average voltage in and update the avg_vin value */
+   double get_avg_vin();
+
+   /* return the average voltage out and update the avg_vout value */
+   double get_avg_vout();
+
+   /* return current sense average voltage */
+   double get_avg_iin();
+
+   /* return the upper 12 bits of the average VIN * IIN product */
+   double get_avg_pin();
+
+   /* return the diagnostic word stored on the smba' edge as opposed
+    * to the clock edge. This value can be assigned to diagnostic_word
+    * and then be checked for warn/faults with the same functions. 
+    * This value only resets with the clear faults command            */
+   uint16_t get_black_box();
+
+   /* update all information values at once */
+   void read_values();
+
+#define LM5066_DIAGNOSTIC_VOUT_UNDERVOLTAGE_WARN 0x8000
+   /* return true if vout undervoltage warning has triggered */
+   bool vout_uv_warn();
+
+#define LM5066_DIAGNOSTIC_IIN_OP_WARN 0x4000
+   /* return true if input overpower warning has triggered */
+   bool iin_op_warn();
+
+#define LM5066_DIAGNOSTIC_VIN_UNDERVOLTAGE_WARN 0x2000
+   /* return true if vin undervoltage warning has triggered */
+   bool vin_uv_warn();
+
+#define LM5066_DIAGNOSTIC_VIN_OVERVOLTAGE_WARN 0x1000
+   /* return true if vin undervoltage warning has triggered */
+   bool vin_ov_warn();
+
+#define LM5066_DIAGNOSTIC_POWER_GOOD_INVERTED 0x0800
+   /* return true if power good is inverted */
+   bool power_good();
+
+#define LM5066_DIAGNOSTIC_OVERTEMPERATURE_WARN 0x0400
+   /* return true if overtemperature warning is triggered */
+   bool ot_warn();
+
+#define LM5066_DIAGNOSTIC_TIMER_LATCHED 0x0200
+   /* return true timer is latched */
+   bool timer_latched();
+
+#define LM5066_DIAGNOSTIC_MOSFET_SHORTED 0x0100
+   /* return true timer is latched */
+   bool mosfet_shorted();
+
+#define LM5066_DIAGNOSTIC_CONFIG_PRESET 0x0080
+   /* return true if the config is set to default?
+    * Not sure what this one means to be honest */
+   bool config_preset();
+
+#define LM5066_DIAGNOSTIC_DEVICE_OFF 0x0040
+   /* return true if device is off */
+   bool device_off();
+
+#define LM5066_DIAGNOSTIC_VIN_UNDERVOLTAGE_FAULT 0x0020 
+   /* return true if a vin undervoltage fault has occured */
+   bool vin_uv_fault();
+
+#define LM5066_DIAGNOSTIC_VIN_OVERVOLTAGE_FAULT 0x0010 
+   /* return true if a vin overvoltage fault has occured */
+   bool vin_ov_fault();
+
+#define LM5066_DIAGNOSTIC_OVERCURRENT_FAULT 0x0008 
+#define LM5066_DIAGNOSTIC_OVERPOWER_FAULT 0x0008 
+   /* return true if a iin overcurrent fault has occured 
+      return true if a pin overpower fault has occured   */
+   bool iin_fault();
+
+#define LM5066_DIAGNOSTIC_TEMPERATURE_FAULT 0x0004 
+   /* return true if a overtemperature fault has occured */
+   bool temp_fault();
+
+#define LM5066_DIAGNOSTIC_CML_FAULT 0x0002 
+   /* return true if a communication fault has occured */
+   bool cml_fault();
+
+#define LM5066_DIAGNOSTIC_CIRCUIT_BREAKER_FAULT 0x0001
+   /* return true if a circuit breaker fault has occured */
+   bool cb_fault();
 
 };
 
