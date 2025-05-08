@@ -268,7 +268,7 @@ private:
 public:
 
    /* initialize the lm5066 */
-   lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin);
+   lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin, float sense_resistor = 0.001f);
 
    /* reset all values to default on exit */
    ~lm5066();
@@ -332,6 +332,8 @@ public:
    double get_undervoltage_warn_val();
 
 private:
+
+   float sense_resistor = 0.001f; /* the value of the sense resistor */
 
    struct lm5066_ein_values {
       uint32_t accumulator;

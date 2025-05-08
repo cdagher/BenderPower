@@ -73,7 +73,8 @@ double exp10(int val) {
    return 0;
 }
 
-lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin) {
+lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin, float sense_resistor = 0.001f) {
+   this->sense_resistor = sense_resistor;
    this->i2c_conn = i2c_conn;
    this->addr = addr;
    this->smba_pin = smba_pin;
@@ -372,7 +373,7 @@ double lm5066::get_iin() {
 
    uint16_t val = ((uint16_t)recved[1] << 8) | recved[0];
 
-   return from_telemetry_int(val, 15076, -503.9, -2);
+   return from_telemetry_int(val, (15076.0f * this->sense_resistor), -503.9, -2);
 }
 
 
@@ -406,7 +407,7 @@ double lm5066::get_pin() {
 
    uint16_t val = ((uint16_t)recved[1] << 8) | recved[0];
 
-   return from_telemetry_int(val, 1701, -4000, -3);
+   return from_telemetry_int(val, (1701.0f * this->sense_resistor), -4000, -3);
 }
 
 void lm5066::get_part_string(char * buf, int size) {
@@ -454,7 +455,7 @@ double lm5066::get_vaux() {
 
 void lm5066::set_overcurrent_warn_val(double apms) {
 
-   uint16_t to_send = to_telemetry_int(apms, 7645, 100, -2);
+   uint16_t to_send = to_telemetry_int(apms, (7645.0f * this->sense_resistor), 100, -2);
    uint8_t data[2] = { (uint8_t)(to_send & 0xff), (uint8_t)((to_send >> 8)&0xf) };
 
    cmd_write(LM5066_CMD_MFR_IIN_OC_WARN_LIMIT, data, 2);
@@ -468,7 +469,7 @@ double lm5066::get_overcurrent_warn_val() {
 
    uint16_t val = recved[0] | ((uint16_t)recved[1] << 8);
 
-   return from_telemetry_int(val, 7645, 100, -2);
+   return from_telemetry_int(val, (7645.0f * this->sense_resistor), 100, -2);
 }
 
 void lm5066::disable_overcurrent_warn() {
@@ -487,7 +488,7 @@ void lm5066::disable_overpower_warn() {
 
 void lm5066::set_overpower_warn_val(double watts) {
 
-   uint16_t to_send = to_telemetry_int(watts, 860.6, -965, -3);
+   uint16_t to_send = to_telemetry_int(watts, (860.6f * this->sense_resistor), -965, -3);
    uint8_t data[2] = { (uint8_t)(to_send & 0xff), (uint8_t)((to_send >> 8)&0xf) };
 
    cmd_write(LM5066_CMD_MFR_PIN_OP_WARN_LIMIT, data, 2);
@@ -501,7 +502,7 @@ double lm5066::get_overpower_warn_val() {
 
    uint16_t val = recved[0] | ((uint16_t)recved[1] << 8);
 
-   return from_telemetry_int(val, 860.6, -965, -3);
+   return from_telemetry_int(val, (860.6f * this->sense_resistor), -965, -3);
 }
 
 double lm5066::get_max_pin() {
@@ -512,7 +513,7 @@ double lm5066::get_max_pin() {
 
    uint16_t val = recved[0] | ((uint16_t)recved[1] << 8);
 
-   return from_telemetry_int(val, 1701, -4000, -3);
+   return from_telemetry_int(val, (1701.0f * this->sense_resistor), -4000, -3);
 }
 
 void lm5066::clear_max_pin() {
@@ -607,7 +608,7 @@ double lm5066::get_avg_iin() {
 
    uint16_t val = ((uint16_t)recved[1] << 8) | recved[0];
 
-   avg_iin = from_telemetry_int(val, 15076, -503.9, -2);
+   avg_iin = from_telemetry_int(val, (15076.0f * this->sense_resistor), -503.9, -2);
 
    return avg_iin;
 }
@@ -620,7 +621,7 @@ double lm5066::get_avg_pin() {
 
    uint16_t val = ((uint16_t)recved[1] << 8) | recved[0];
 
-   avg_pin = from_telemetry_int(val, 1701, -4000, -3);
+   avg_pin = from_telemetry_int(val, (1701.0f * this->sense_resistor), -4000, -3);
 
    return avg_pin;
 }
