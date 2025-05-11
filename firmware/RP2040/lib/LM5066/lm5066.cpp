@@ -73,7 +73,7 @@ double exp10(int val) {
    return 0;
 }
 
-lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin, float sense_resistor = 0.001f) {
+lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin, float sense_resistor) {
    this->sense_resistor = sense_resistor;
    this->i2c_conn = i2c_conn;
    this->addr = addr;

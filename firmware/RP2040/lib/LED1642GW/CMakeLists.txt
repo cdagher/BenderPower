@@ -7,12 +7,17 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 # Create executable
-add_library(led1642gw
-    led1642gw.cpp
+add_library(led1642gw "")
+
+target_sources(led1642gw
+   PRIVATE
+   ${CMAKE_CURRENT_LIST_DIR}/led1642gw.cpp
+   PUBLIC
+   ${CMAKE_CURRENT_LIST_DIR}/led1642gw.h
 )
 
 # Include directories
-target_include_directories(led1642gw PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(led1642gw PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
 # Link with the Pico SDK libraries
 target_link_libraries(led1642gw
