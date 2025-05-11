@@ -70,12 +70,38 @@ target_link_libraries(${PROJECT_NAME}
     hardware_irq
     hardware_gpio
     hardware_adc
+    hardware_i2c
+    hardware_spi
     lm5066
+    ads1015
+    led1642gw
 )
 
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})
 
-# Enable usb, disable uart outputs
+# Copy ELF, HEX, and UF2 files to the top-level build directory after build
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:${PROJECT_NAME}>
+        ${CMAKE_BINARY_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.hex
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.hex
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.uf2
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.uf2
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.elf
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.elf
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.bin
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.bin
+   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.dis
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.dis
+)
+
+# Enable usb and uart outputs
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_enable_stdio_uart(${PROJECT_NAME} 0)
+pico_enable_stdio_uart(${PROJECT_NAME} 1)

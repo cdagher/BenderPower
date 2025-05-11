@@ -13,20 +13,6 @@
 #include "../lib/LED1642GW/led1642gw.h"
 
 
-lm5066 battery1;
-lm5066 battery2;
-lm5066 battery3;
-
-LED1642GW led_driver;
-
-ads1015 adc1;
-ads1015 adc2;
-
-lm5066 aux1;
-lm5066 aux2;
-lm5066 aux3;
-
-
 int setup();
 
 
@@ -35,18 +21,20 @@ int main() {
    // Initialize the board
    setup();
 
-   battery1 = lm5066(i2c0, BATTERY_1_ADDR, BATTERY_1_ALERT, 500e-6f);
-   battery2 = lm5066(i2c0, BATTERY_2_ADDR, BATTERY_2_ALERT, 500e-6f);
-   battery3 = lm5066(i2c0, BATTERY_3_ADDR, BATTERY_3_ALERT, 500e-6f);
+   lm5066 battery1 = lm5066(i2c0, BATTERY_1_ADDR, BATTERY_1_ALERT, 500e-6f);
+   lm5066 battery2 = lm5066(i2c0, BATTERY_2_ADDR, BATTERY_2_ALERT, 500e-6f);
+   lm5066 battery3 = lm5066(i2c0, BATTERY_3_ADDR, BATTERY_3_ALERT, 500e-6f);
 
-   led_driver = LED1642GW(spi0, LED_LEN);
+   LED1642GW led_driver = LED1642GW(spi0, LED_LEN);
 
-   adc1 = ads1015(i2c0, ADC_1_ADDR, ADC_1_RDY);
-   adc2 = ads1015(i2c0, ADC_2_ADDR, ADC_2_RDY);
+   ads1015 adc1 = ads1015(i2c0, ADC_1_ADDR, ADC_1_RDY);
+   ads1015 adc2 = ads1015(i2c0, ADC_2_ADDR, ADC_2_RDY);
 
-   aux1 = lm5066(i2c1, AUX_1_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
-   aux2 = lm5066(i2c1, AUX_2_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
-   aux3 = lm5066(i2c1, AUX_3_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
+   lm5066 aux1 = lm5066(i2c1, AUX_1_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
+   lm5066 aux2 = lm5066(i2c1, AUX_2_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
+   lm5066 aux3 = lm5066(i2c1, AUX_3_ADDR, AUX_DUMMY_ALERT, 1.5e-3f);
+
+   led_driver.turnOnLED(0, 0xFFFF);
 
    while (1) {
 
