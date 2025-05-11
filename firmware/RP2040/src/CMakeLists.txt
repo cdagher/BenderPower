@@ -33,6 +33,31 @@ target_include_directories(board
    ${CMAKE_CURRENT_LIST_DIR}
 )
 
+
+
+add_library(shell "")
+
+target_sources(shell
+   PRIVATE
+   ${CMAKE_CURRENT_LIST_DIR}/shell.cpp
+   PUBLIC
+   ${CMAKE_CURRENT_LIST_DIR}/shell.h
+)
+
+target_include_directories(shell
+   PUBLIC
+   ${CMAKE_CURRENT_LIST_DIR}
+)
+
+target_link_libraries(shell
+   pico_stdlib
+   hardware_pio
+   ads1015
+   led1642gw
+   lm5066
+)
+
+
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME} 
     main.cpp
