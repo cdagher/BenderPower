@@ -27,15 +27,14 @@
 // LED Driver pins
 /*
 LED Deiver is the LED1642GW from ST Microelectronics https://www.st.com/resource/en/datasheet/led1642gw.pdf
-It is driven over SPI with the following pinout:
 
 Note that the SDO pin is not used in this configuration, so there is no feedback
 from the LED driver to the RP2040.
 */
 #define LED_CLK 2
-#define LED_CLK_MODE GPIO_FUNC_SPI
+#define LED_CLK_MODE GPIO_FUNC_SIO
 #define LED_SDI 3
-#define LED_SDI_MODE GPIO_FUNC_SPI
+#define LED_SDI_MODE GPIO_FUNC_SIO
 #define LED_LEN  6
 #define LED_LEN_MODE GPIO_FUNC_SIO
 
