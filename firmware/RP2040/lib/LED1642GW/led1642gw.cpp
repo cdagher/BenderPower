@@ -1,70 +1,85 @@
-#include "led1642gw.h"
-#include "hardware/spi.h"
+#include "LED1642GW.h"
+#include "hardware/gpio.h"
+#include "pico/stdlib.h"
 
-LED1642GW::LED1642GW(spi_inst_t* spi_port, uint le)
-    : spi(spi_port), pinLE(le) {
-    for (int i = 0; i < 16; ++i) brightnessBuffer[i] = 0;
+LED1642GW::LED1642GW(uint sclk_pin, uint sdata_pin, uint le_pin)
+    : _sclk_pin(sclk_pin), _sdata_pin(sdata_pin), _le_pin(le_pin)
+{
+    _brightness_buffer.fill(0); // All LEDs off by default
 }
 
 void LED1642GW::begin() {
-    spi_init(spi, 1000 * 1000); // 1 MHz default
+    gpio_init(_sclk_pin);
+    gpio_set_dir(_sclk_pin, GPIO_OUT);
+    gpio_put(_sclk_pin, 0);
 
-    gpio_init(pinLE);
-    gpio_set_dir(pinLE, GPIO_OUT);
-    gpio_put(pinLE, 0);
+    gpio_init(_sdata_pin);
+    gpio_set_dir(_sdata_pin, GPIO_OUT);
+    gpio_put(_sdata_pin, 0);
+
+    gpio_init(_le_pin);
+    gpio_set_dir(_le_pin, GPIO_OUT);
+    gpio_put(_le_pin, 0);
 }
 
-void LED1642GW::sendData(const uint8_t* data, size_t len) {
-    spi_write_blocking(spi, data, len);
+void LED1642GW::setAllOn() {
+    _brightness_buffer.fill(0xFFFF);
+    update();
 }
 
-void LED1642GW::latch() {
-    pulsePin(pinLE);
+void LED1642GW::setAllOff() {
+    _brightness_buffer.fill(0x0000);
+    update();
 }
 
-void LED1642GW::writeConfigRegister(uint16_t config) {
-    uint8_t buffer[2] = {
-        static_cast<uint8_t>((config >> 8) & 0xFF),
-        static_cast<uint8_t>(config & 0xFF)
-    };
-    sendData(buffer, 2);
-    // Send 7 CLK pulses with LE high for config write
-    gpio_put(pinLE, 1);
-    sleep_ms(1);
-    gpio_put(pinLE, 0);
-}
-
-void LED1642GW::writeBrightnessData(const uint16_t* brightnessData) {
-    uint8_t buffer[32];
-    for (int i = 0; i < 16; ++i) {
-        buffer[i * 2] = (brightnessData[15 - i] >> 8) & 0xFF; // MSB first
-        buffer[i * 2 + 1] = brightnessData[15 - i] & 0xFF;
+void LED1642GW::setLedOn(uint8_t index, uint16_t brightness) {
+    if (index < 16) {
+        _brightness_buffer[index] = brightness;
+        update();
     }
-    sendData(buffer, 32);
-    // Latch brightness
-    for (int i = 0; i < 15; ++i) latch();
-    latch(); // Global latch
 }
 
-void LED1642GW::turnOnLED(uint8_t index, uint16_t brightness) {
-    if (index >= 16) return;
-    brightnessBuffer[index] = brightness;
-    writeBrightnessData(brightnessBuffer);
+void LED1642GW::setLedOff(uint8_t index) {
+    if (index < 16) {
+        _brightness_buffer[index] = 0x0000;
+        update();
+    }
 }
 
-void LED1642GW::turnOffLED(uint8_t index) {
-    if (index >= 16) return;
-    brightnessBuffer[index] = 0;
-    writeBrightnessData(brightnessBuffer);
+void LED1642GW::update() {
+    // Send first 15 brightness values (data latch required)
+    for (int i = 15; i > 0; --i) {
+        shiftOut16(_brightness_buffer[i]);
+        gpio_put(_le_pin, 1);
+        for (int j = 0; j < 3; ++j) pulsePin(_sclk_pin); // Data latch: LE high for 3 rising edges
+        gpio_put(_le_pin, 0);
+    }
+
+    // Send last brightness value (global latch required)
+    shiftOut16(_brightness_buffer[0]);
+    gpio_put(_le_pin, 1);
+    for (int j = 0; j < 5; ++j) pulsePin(_sclk_pin); // Global latch: LE high for 5 rising edges
+    gpio_put(_le_pin, 0);
+
+    // Send switch register: all outputs ON (0xFFFF)
+    shiftOut16(0xFFFF);
+    gpio_put(_le_pin, 1);
+    pulsePin(_sclk_pin); // LE high for 1 clock rising edge for switch
+    gpio_put(_le_pin, 0);
 }
 
-void LED1642GW::spiWriteByte(uint8_t data) {
-    spi_write_blocking(spi, &data, 1);
+void LED1642GW::shiftOut16(uint16_t value) {
+    for (int8_t i = 15; i >= 0; --i) {
+        bool bit = (value >> i) & 0x1;
+        gpio_put(_sdata_pin, bit);
+        pulsePin(_sclk_pin);
+    }
 }
 
 void LED1642GW::pulsePin(uint pin) {
+    gpio_put(pin, 0);
+    sleep_us(1); // small delay for timing margin
     gpio_put(pin, 1);
     sleep_us(1);
     gpio_put(pin, 0);
-    sleep_us(1);
 }
