@@ -32,7 +32,7 @@
 #define SHELL_SCROLLBACK 5
 
 /* maximum number of devices allowed in the shell */
-#define SHELL_DEVICE_COUNT 8
+#define SHELL_DEVICE_COUNT 10
 
 /* wrapper */
 #define SHELL_GETCHAR() stdio_getchar_timeout_us(0)
@@ -58,14 +58,25 @@ struct circular_buffer {
 void circular_buffer_add(char * val, struct circular_buffer * buf);
 void circular_buffer_get(char * val, uint8_t pos, struct circular_buffer * buf);
 
-#define SHELL_DEVICE_NONE      0b00
+#define SHELL_DEVICE_ANY       0b00
 #define SHELL_DEVICE_ADS1015   0b01
 #define SHELL_DEVICE_LED1642GW 0b10
-#define SHELL_DEVICE_LM5066    0b10
+#define SHELL_DEVICE_LM5066    0b11
 
-#define SHELL_INPUT_NONE      0b00
-#define SHELL_INPUT_NUMBER    0b01
-#define SHELL_INPUT_STRING    0b10
+#define SHELL_INPUT_NONE      0b000
+#define SHELL_INPUT_NUMBER    0b001
+#define SHELL_INPUT_STRING    0b010
+#define SHELL_INPUT_NUMBER2   0b011
+#define SHELL_INPUT_STRING2   0b100
+#define SHELL_INPUT_NUM_STR   0b101
+#define SHELL_INPUT_STR_NUM   0b110
+
+/* value passed on any of the two
+ * argument inputs.              */
+struct shell_pair {
+   void * arg0;
+   void * arg1;
+};
 
 /* a device that the shell should be able to 
  * interface with. Will show up as a directory */
@@ -78,6 +89,28 @@ struct shell_device {
       LED1642GW * led;
    };
 };
+
+#define ADD_SHELL_DEVICE_LM5066(ptr,sh)                    \
+   struct shell_device __shell_device_##ptr;               \
+   __shell_device_##ptr.device_type = SHELL_DEVICE_LM5066; \
+   strcpy(__shell_device_##ptr.name,#ptr);                 \
+   __shell_device_##ptr.lm = ptr;                          \
+   sh.add_device(&__shell_device_##ptr)
+
+#define ADD_SHELL_DEVICE_LED1642GW(ptr,sh)                    \
+   struct shell_device __shell_device_##ptr;                  \
+   __shell_device_##ptr.device_type = SHELL_DEVICE_LED1642GW; \
+   strcpy(__shell_device_##ptr.name,#ptr);                    \
+   __shell_device_##ptr.led = &ptr;                           \
+   sh.add_device(&__shell_device_##ptr)
+
+#define ADD_SHELL_DEVICE_ADS1015(ptr,sh)                    \
+   struct shell_device __shell_device_##ptr;                \
+   __shell_device_##ptr.device_type = SHELL_DEVICE_ADS1015; \
+   strcpy(__shell_device_##ptr.name,#ptr);                  \
+   __shell_device_##ptr.ads = &ptr;                         \
+   sh.add_device(&__shell_device_##ptr)
+   
 
 /* a command that the shell can execute. Note that
  * some commands are tied to the specific devices
@@ -96,6 +129,14 @@ struct shell_command {
 
    struct shell_command * next;
 };
+
+#define ADD_SHELL_COMMAND(func,device,input,sh)  \
+   struct shell_command __shell_command_##func;  \
+   __shell_command_##func.device_type = device;  \
+   __shell_command_##func.input_type = input;    \
+   strcpy(__shell_command_##func.name,#func);    \
+   __shell_command_##func.command = func;        \
+   sh.add_command(&__shell_command_##func)
 
 class shell {
 public:

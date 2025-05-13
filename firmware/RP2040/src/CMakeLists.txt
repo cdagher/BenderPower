@@ -40,8 +40,10 @@ add_library(shell "")
 target_sources(shell
    PRIVATE
    ${CMAKE_CURRENT_LIST_DIR}/shell.cpp
+   ${CMAKE_CURRENT_LIST_DIR}/shell_cmds.cpp
    PUBLIC
    ${CMAKE_CURRENT_LIST_DIR}/shell.h
+   ${CMAKE_CURRENT_LIST_DIR}/shell_cmds.h
 )
 
 target_include_directories(shell
@@ -76,6 +78,7 @@ target_link_libraries(${PROJECT_NAME}
     lm5066
     ads1015
     led1642gw
+    shell
 )
 
 # Create map/bin/hex/uf2 files

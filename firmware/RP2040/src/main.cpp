@@ -8,6 +8,8 @@
 
 #include "board.h"
 #include "version.h"
+#include "shell.h"
+#include "shell_cmds.h"
 
 #include "../lib/LM5066/lm5066.h"
 #include "../lib/ADS1015/ads1015.h"
@@ -193,9 +195,30 @@ int main() {
 
    led_startup(led_driver);
 
+   printf("Initializing shell...\n");
+   shell sh;
+
+   /* add shell devices */
+   ADD_SHELL_DEVICE_LM5066(battery1,sh);
+   ADD_SHELL_DEVICE_LM5066(battery2,sh);
+   ADD_SHELL_DEVICE_LM5066(battery3,sh);
+   ADD_SHELL_DEVICE_LM5066(aux1,sh);
+   ADD_SHELL_DEVICE_LM5066(aux2,sh);
+   ADD_SHELL_DEVICE_LM5066(aux3,sh);
+   ADD_SHELL_DEVICE_LED1642GW(led_driver,sh);
+   ADD_SHELL_DEVICE_ADS1015(adc1,sh);
+   ADD_SHELL_DEVICE_ADS1015(adc2,sh);
+
+   /* add shell commands */
+   ADD_SHELL_BASE_COMMANDS(sh);
+   ADD_SHELL_LM5066_COMMANDS(sh);
+   ADD_SHELL_LED1642GW_COMMANDS(sh);
+   ADD_SHELL_ADS1015_COMMANDS(sh);
+
    printf("Entering main loop...\n");
    while (1) {
 
+      /*
       // Read battery 1 status and diagnostics
       printf("Reading battery 1 status...\n");
       stdio_flush();
@@ -228,6 +251,10 @@ int main() {
       printf("\n");
       
       sleep_ms(1000);
+      */
+      sleep_ms(50);
+
+      sh.poll_input();
    }
 
 }
