@@ -1,4 +1,3 @@
-
 #include "lm5066.h"
 #include <limits.h>
 
@@ -81,41 +80,25 @@ lm5066::lm5066(i2c_inst_t * i2c_conn, uint8_t addr, uint32_t smba_pin, float sen
 }
 
 void lm5066::send_command(uint8_t cmd) {
-
-   i2c_write_byte_raw(i2c_conn, ((addr << 1) | 0));
-
-   i2c_write_byte_raw(i2c_conn, cmd);
-
+   // Use i2c_write_blocking to send the command byte
+   i2c_write_blocking(i2c_conn, addr, &cmd, 1, false);
 }
 
 void lm5066::write_data(uint8_t * bytes, int num) {
-
-   for (int i = 0; i < num; ++i) {
-
-      i2c_write_byte_raw(i2c_conn, bytes[i]);
-      
-   }
-
+   // Use i2c_write_blocking to send the data bytes
+   i2c_write_blocking(i2c_conn, addr, bytes, num, false);
 }
 
 void lm5066::read_data(uint8_t * bytes, int num) {
-
-   for (int i = 0; i < num; ++i) {
-
-      bytes[i] = i2c_read_byte_raw(i2c_conn);
-      
-   }
-
+   // Use i2c_read_blocking to read the data bytes
+   i2c_read_blocking(i2c_conn, addr, bytes, num, false);
 }
 
 void lm5066::cmd_read(uint8_t cmd, uint8_t * bytes, int num) {
-
-   send_command(cmd);
-
-   i2c_write_byte_raw(i2c_conn, ((addr << 1) | 1));
-
-   read_data(bytes,num);
-
+    // Write the command byte to the device (write phase)
+    i2c_write_blocking(i2c_conn, addr, &cmd, 1, true); // true = no stop (repeated start)
+    // Now read the data (read phase)
+    i2c_read_blocking(i2c_conn, addr, bytes, num, false); // false = send stop after read
 }
 
 void lm5066::cmd_write(uint8_t cmd, uint8_t * bytes, int num) {

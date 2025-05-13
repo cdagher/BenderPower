@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "hardware/pio.h"
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
@@ -166,6 +167,7 @@ int main() {
 
    // Wait for USB serial connection before proceeding
    printf("Waiting for USB serial connection...\n");
+   stdio_flush();
    sleep_ms(5000);
    printf("USB serial connected.\n");
 
@@ -173,7 +175,7 @@ int main() {
    // Initialize the board
    printf("Calling setup()...\n");
    setup();
-   printf("Returned from setup(). Initializing peripherals...\n");
+   printf("Initializing peripherals...\n");
 
    lm5066 battery1 = lm5066(i2c0, BATTERY_1_ADDR, BATTERY_1_ALERT, 500e-6f);
    lm5066 battery2 = lm5066(i2c0, BATTERY_2_ADDR, BATTERY_2_ALERT, 500e-6f);
@@ -194,9 +196,38 @@ int main() {
    printf("Entering main loop...\n");
    while (1) {
 
-      printf("Sleeping for 1 second...\n");
-      sleep_ms(1000);
+      // Read battery 1 status and diagnostics
+      printf("Reading battery 1 status...\n");
+      stdio_flush();
+      battery1.update_diagnostics();
+      battery1.read_values();
 
+      printf("Battery 1 Status:\n");
+      printf("  VIN: %.3f V\n", battery1.get_vin());
+      printf("  VOUT: %.3f V\n", battery1.get_vout());
+      printf("  IIN: %.3f A\n", battery1.get_iin());
+      printf("  PIN: %.3f W\n", battery1.get_pin());
+      printf("  Temperature: %.2f C\n", battery1.get_temperature());
+      printf("  Diagnostics:\n");
+      printf("    VOUT UV Warn: %s\n", battery1.vout_uv_warn() ? "YES" : "NO");
+      printf("    IIN OP Warn: %s\n", battery1.iin_op_warn() ? "YES" : "NO");
+      printf("    VIN UV Warn: %s\n", battery1.vin_uv_warn() ? "YES" : "NO");
+      printf("    VIN OV Warn: %s\n", battery1.vin_ov_warn() ? "YES" : "NO");
+      printf("    Power Good: %s\n", battery1.power_good() ? "YES" : "NO");
+      printf("    OT Warn: %s\n", battery1.ot_warn() ? "YES" : "NO");
+      printf("    Timer Latched: %s\n", battery1.timer_latched() ? "YES" : "NO");
+      printf("    MOSFET Shorted: %s\n", battery1.mosfet_shorted() ? "YES" : "NO");
+      printf("    Config Preset: %s\n", battery1.config_preset() ? "YES" : "NO");
+      printf("    Device Off: %s\n", battery1.device_off() ? "YES" : "NO");
+      printf("    VIN UV Fault: %s\n", battery1.vin_uv_fault() ? "YES" : "NO");
+      printf("    VIN OV Fault: %s\n", battery1.vin_ov_fault() ? "YES" : "NO");
+      printf("    IIN Fault: %s\n", battery1.iin_fault() ? "YES" : "NO");
+      printf("    Temp Fault: %s\n", battery1.temp_fault() ? "YES" : "NO");
+      printf("    CML Fault: %s\n", battery1.cml_fault() ? "YES" : "NO");
+      printf("    CB Fault: %s\n", battery1.cb_fault() ? "YES" : "NO");
+      printf("\n");
+      
+      sleep_ms(1000);
    }
 
 }

@@ -72,6 +72,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_adc
     hardware_i2c
     hardware_spi
+    hardware_pio
     lm5066
     ads1015
     led1642gw
