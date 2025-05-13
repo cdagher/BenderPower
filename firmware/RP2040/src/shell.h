@@ -94,7 +94,7 @@ struct shell_device {
    struct shell_device __shell_device_##ptr;               \
    __shell_device_##ptr.device_type = SHELL_DEVICE_LM5066; \
    strcpy(__shell_device_##ptr.name,#ptr);                 \
-   __shell_device_##ptr.lm = ptr;                          \
+   __shell_device_##ptr.lm = &ptr;                          \
    sh.add_device(&__shell_device_##ptr)
 
 #define ADD_SHELL_DEVICE_LED1642GW(ptr,sh)                    \

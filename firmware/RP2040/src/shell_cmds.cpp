@@ -208,7 +208,7 @@ int cat(void * arg, shell * sh) {
             printf("%s\n",str);
          }
          else if (STREQL((char *)arg,"warn_set")) {
-            printf("vout uv: %f\n",sh->dir->lm->get_vout_undervoltage_warn_val());
+            printf("vout uv: %f\n",sh->dir->lm->get_vout_undervoltage_warn());
             printf("overtemp: %f\n",sh->dir->lm->get_overtemperature_warn_val());
             printf("vin uv: %f\n",sh->dir->lm->get_undervoltage_warn_val());
             printf("vin ov: %f\n",sh->dir->lm->get_overvoltage_warn_val());
@@ -437,7 +437,7 @@ int status(void * arg, shell * sh) {
          sh->dir->lm->read_values();
          if (sh->dir->lm->mosfet_shorted()) {
             printf("\033[31m!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-            printf("!!!!! MOSFET SHORTED !!!!!\n"
+            printf("!!!!! MOSFET SHORTED !!!!!\n");
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!\033[0m\n");
          }
          else
@@ -447,19 +447,11 @@ int status(void * arg, shell * sh) {
          printf("avg vout: %f\n",sh->dir->lm->get_avg_vout());
          printf("avg iin: %f\n",sh->dir->lm->get_avg_iin());
          printf("avg pin: %f\n",sh->dir->lm->get_avg_pin());
-         if (sh->dir->lm->vout_uv_fault())
-            printf("vout uv: [\033[31mFAULT\033[0m]\n");
-         else if (sh->dir->lm->vout_uv_warn())
+         if (sh->dir->lm->vout_uv_warn())
             printf("vout uv: [\033[33mWARN\033[0m]\n");
          else
             printf("vout uv: [\033[32mGOOD\033[0m]\n");
-         if (sh->dir->lm->inn_fault())
-            printf("iin op: [\033[31mFAULT\033[0m]\n");
-         else if (sh->dir->lm->iin_op_warn())
-            printf("iin op: [\033[33mWARN\033[0m]\n");
-         else
-            printf("iin op: [\033[32mGOOD\033[0m]\n");
-         if (sh->dir->lm->inn_fault())
+         if (sh->dir->lm->iin_fault())
             printf("iin op: [\033[31mFAULT\033[0m]\n");
          else if (sh->dir->lm->iin_op_warn())
             printf("iin op: [\033[33mWARN\033[0m]\n");
@@ -556,67 +548,67 @@ int set(void * arg, shell * sh) {
       case SHELL_DEVICE_LED1642GW:
 
          if (STREQL("led0",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(0,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(0,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led1",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(1,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(1,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led2",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(2,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(2,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led3",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(3,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(3,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led4",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(4,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(4,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led5",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(5,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(5,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led6",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(6,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(6,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led7",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(7,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(7,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led8",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(8,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(8,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led9",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(9,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(9,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led10",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(10,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(10,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led11",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(11,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(11,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led12",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(12,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(12,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led13",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(13,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(13,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led14",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(14,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(14,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else if (STREQL("led15",(char *)((shell_pair *)arg)->arg0)) {
-            sh->dir->ads->setLedOn(15,(long)((shell_pair *)arg)->arg1);
+            sh->dir->led->setLedOn(15,(long)((shell_pair *)arg)->arg1);
             return 0;
          }
          else {

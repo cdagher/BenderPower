@@ -42,7 +42,7 @@ int get(void * arg, shell * sh);
 
 /* shell led1642gw commands */
 int ledon(void * arg, shell * sh);
-int ledof(void * arg, shell * sh);
+int ledoff(void * arg, shell * sh);
 
 #define ADD_SHELL_LED1642GW_COMMANDS(sh) \
    ADD_SHELL_COMMAND(ledon,SHELL_DEVICE_LED1642GW,SHELL_INPUT_NUMBER,sh); \
