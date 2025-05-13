@@ -25,8 +25,6 @@ void circular_buffer_get(char * val, uint8_t pos, struct circular_buffer * buf) 
 
 shell::shell() {
 
-   stdio_init_all();
-
    this->scrollback = 0;
    this->linepos = 0;
    this->linemax = 0;
@@ -83,6 +81,9 @@ struct shell_command * shell::print_partial_matches() {
          if (prev)
             prev->next = next;
 
+         if (curr == commands)
+            commands = next;
+
          curr = next;
 
       }
@@ -104,13 +105,15 @@ struct shell_command * shell::print_partial_matches() {
    }
 
    curr = collected_matches;
+   printf("\n");
    while (curr->next) {
 
       printf("%s\t",curr->name);
 
+      curr = curr->next;
    }
 
-   printf("%s\t",curr->name);
+   printf("%s\n",curr->name);
    curr->next = commands;
    commands = collected_matches;
 
@@ -123,16 +126,21 @@ int shell::execute_command() {
 
    while (curr) {
 
-      if (strncmp(curr->name,buf,strcspn(buf," ")) == 0) {
+      int cspn = strcspn(buf," ");
+
+      if (strncmp(curr->name,buf,cspn) == 0 &&
+          strlen(curr->name) <= cspn) {
 
          void * arg;
+         struct shell_pair pair;
 
-         if (curr->device_type != dir->device_type) {
+         if (!(curr->device_type == SHELL_DEVICE_ANY ||
+             (dir && curr->device_type == dir->device_type))) {
             printf("command called from incorrect device\n");
             return -2;
          }
 
-         char * arg_start = buf + strcspn(buf," ");
+         char * arg_start = buf + cspn;
          while (*arg_start == ' ') arg_start += 1;
 
          switch (curr->input_type) {
@@ -142,6 +150,32 @@ int shell::execute_command() {
             case SHELL_INPUT_STRING:
                arg_start[strcspn(arg_start," ")] = '\0';
                arg = (void *)arg_start;
+            break;
+            case SHELL_INPUT_NUMBER2:
+               pair.arg0 = (void *)strtol(arg_start,&arg_start,0);
+               pair.arg1 = (void *)strtol(arg_start,NULL,0);
+               arg = (void *)&pair;
+            break;
+            case SHELL_INPUT_STRING2:
+               arg_start[strcspn(arg_start," ")] = '\0';
+               pair.arg0 = (void *)arg_start;
+               arg_start += strlen(arg_start) + 1;
+               arg_start[strcspn(arg_start," ")] = '\0';
+               pair.arg1 = (void *)arg_start;
+               arg = (void *)&pair;
+            break;
+            case SHELL_INPUT_NUM_STR:
+               pair.arg0 = (void *)strtol(arg_start,&arg_start,0);
+               arg_start[strcspn(arg_start," ")] = '\0';
+               pair.arg1 = (void *)arg_start;
+               arg = (void *)&pair;
+            break;
+            case SHELL_INPUT_STR_NUM:
+               arg_start[strcspn(arg_start," ")] = '\0';
+               pair.arg0 = (void *)arg_start;
+               arg_start += strlen(arg_start) + 1;
+               pair.arg1 = (void *)strtol(arg_start,NULL,0);
+               arg = (void *)&pair;
             break;
             case SHELL_INPUT_NONE:
             default:
@@ -153,6 +187,7 @@ int shell::execute_command() {
 
       }
 
+      curr = curr->next;
    }
 
    printf("command not found\n");
@@ -261,6 +296,7 @@ void shell::poll_input() {
 
          case SHELL_ENTER:
          {
+
             printf("\n");
 
             if (buf[0] == '\0')

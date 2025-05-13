@@ -540,13 +540,27 @@ public:
    /* return true if input overpower warning has triggered */
    bool iin_op_warn();
 
+#define LM5066_DIAGNOSTIC_OVERCURRENT_FAULT 0x0008 
+#define LM5066_DIAGNOSTIC_OVERPOWER_FAULT 0x0008 
+   /* return true if a iin overcurrent fault has occured 
+      return true if a pin overpower fault has occured   */
+   bool iin_fault();
+
 #define LM5066_DIAGNOSTIC_VIN_UNDERVOLTAGE_WARN 0x2000
    /* return true if vin undervoltage warning has triggered */
    bool vin_uv_warn();
 
+#define LM5066_DIAGNOSTIC_VIN_UNDERVOLTAGE_FAULT 0x0020 
+   /* return true if a vin undervoltage fault has occured */
+   bool vin_uv_fault();
+
 #define LM5066_DIAGNOSTIC_VIN_OVERVOLTAGE_WARN 0x1000
    /* return true if vin undervoltage warning has triggered */
    bool vin_ov_warn();
+
+#define LM5066_DIAGNOSTIC_VIN_OVERVOLTAGE_FAULT 0x0010 
+   /* return true if a vin overvoltage fault has occured */
+   bool vin_ov_fault();
 
 #define LM5066_DIAGNOSTIC_POWER_GOOD_INVERTED 0x0800
    /* return true if power good is inverted */
@@ -556,12 +570,16 @@ public:
    /* return true if overtemperature warning is triggered */
    bool ot_warn();
 
+#define LM5066_DIAGNOSTIC_TEMPERATURE_FAULT 0x0004 
+   /* return true if a overtemperature fault has occured */
+   bool temp_fault();
+
 #define LM5066_DIAGNOSTIC_TIMER_LATCHED 0x0200
-   /* return true timer is latched */
+   /* return true if timer is latched */
    bool timer_latched();
 
 #define LM5066_DIAGNOSTIC_MOSFET_SHORTED 0x0100
-   /* return true timer is latched */
+   /* return true if mosfet is shorted */
    bool mosfet_shorted();
 
 #define LM5066_DIAGNOSTIC_CONFIG_PRESET 0x0080
@@ -572,24 +590,6 @@ public:
 #define LM5066_DIAGNOSTIC_DEVICE_OFF 0x0040
    /* return true if device is off */
    bool device_off();
-
-#define LM5066_DIAGNOSTIC_VIN_UNDERVOLTAGE_FAULT 0x0020 
-   /* return true if a vin undervoltage fault has occured */
-   bool vin_uv_fault();
-
-#define LM5066_DIAGNOSTIC_VIN_OVERVOLTAGE_FAULT 0x0010 
-   /* return true if a vin overvoltage fault has occured */
-   bool vin_ov_fault();
-
-#define LM5066_DIAGNOSTIC_OVERCURRENT_FAULT 0x0008 
-#define LM5066_DIAGNOSTIC_OVERPOWER_FAULT 0x0008 
-   /* return true if a iin overcurrent fault has occured 
-      return true if a pin overpower fault has occured   */
-   bool iin_fault();
-
-#define LM5066_DIAGNOSTIC_TEMPERATURE_FAULT 0x0004 
-   /* return true if a overtemperature fault has occured */
-   bool temp_fault();
 
 #define LM5066_DIAGNOSTIC_CML_FAULT 0x0002 
    /* return true if a communication fault has occured */
